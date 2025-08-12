@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Brain, FileText, Play, TrendingUp, Clock, CheckCircle, ArrowRight } from 'lucide-react'
 import { getServerSession } from "next-auth"
-// Make sure the path below matches the actual location of your route.ts file
 import { authOptions } from "@/app/(auth)/[...nextauth]/route"
 const breadcrumbItems = [
     { label: "Dashboard", href: "/dashboard" }
@@ -21,7 +20,7 @@ export default async function DashboardPage() {
             <div className="flex flex-col gap-2">
                 <h1 className="text-3xl font-bold tracking-tight">Welcome back, Alex!</h1>
                 <p className="text-muted-foreground">
-                    Ready to ace your next interview? Let&apos;s continue your preparation journey.
+                    Ready to ace your next interview? Let&apos;s continue your preparation journey
                 </p>
             </div>
 
