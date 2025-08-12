@@ -26,27 +26,27 @@ const navigationItems = [
   },
   {
     title: "Projects",
-    url: "/dashboard/projects",
+    url: "/projects",
     icon: FolderOpen,
   },
   {
     title: "Resume Upload",
-    url: "/dashboard/resume",
+    url: "/resume",
     icon: FileUp,
   },
   {
     title: "AI Interview Simulation",
-    url: "/dashboard/interview",
+    url: "/interview",
     icon: Brain,
   },
   {
     title: "Interview History",
-    url: "/dashboard/history",
+    url: "/history",
     icon: History,
   },
   {
     title: "Settings",
-    url: "/dashboard/settings",
+    url: "/settings",
     icon: Settings,
   },
 ]

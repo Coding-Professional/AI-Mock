@@ -14,9 +14,6 @@ const breadcrumbItems = [
 export default async function DashboardPage() {
     const session = await getServerSession(authOptions)
 
-    if (!session) {
-        return <div>You are not logged in</div>
-    }
     return (
         <div className="space-y-6">
             <BreadcrumbNav items={breadcrumbItems} />
