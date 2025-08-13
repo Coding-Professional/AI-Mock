@@ -79,7 +79,7 @@ export default function ProjectsPage() {
               <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
                 <div className="flex items-center gap-1">
                   <Users className="h-4 w-4" />
-                  {project.interviews} interviews
+                  {project.interviews} interviews.
                 </div>
                 <div className="flex items-center gap-1">
                   <Calendar className="h-4 w-4" />
