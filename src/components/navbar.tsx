@@ -3,10 +3,22 @@
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { UserDropdown } from "@/components/user-dropdown"
 import { Button } from "@/components/ui/button"
-import { Bell, Search } from 'lucide-react'
+import { Bell, Loader2, Search } from 'lucide-react'
 import { Input } from "@/components/ui/input"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { signOut } from "next-auth/react"
 
 export function Navbar() {
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+
+  const handleSignOut = async () => {
+    setLoading(true)
+    await signOut({ redirect: false })
+    router.replace("/login")
+  }
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center px-6 gap-4">
@@ -35,7 +47,13 @@ export function Navbar() {
           
           <UserDropdown />
         </div>
+               <div className="flex justify-between items-center">
+          <Button variant="outline" onClick={handleSignOut} disabled={loading}>
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Sign Out"}
+          </Button>
+        </div>
       </div>
+      
     </header>
   )
 }

@@ -6,16 +6,18 @@ import { signIn, getSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Loader2, Lock, Brain } from "lucide-react"
+import { Loader2, User, Brain } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import Link from "next/link"
 
-export default function LoginPage() {
+export default function SignupPage() {
   const router = useRouter()
   const { toast } = useToast()
 
+  const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -28,25 +30,33 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    setLoading(true)
+    setSubmitting(true)
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    })
-
-    if (result?.error) {
-      toast({
-        variant: "destructive",
-        title: "Login Failed",
-        description: result.error,
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
       })
-      setLoading(false)
-      return
-    }
+      const data = await res.json()
+      if (!res.ok) {
+        toast({ variant: "destructive", title: "Signup Failed", description: data.message || "Check details" })
+        setSubmitting(false)
+        return
+      }
 
-    router.replace("/dashboard")
+      const result = await signIn("credentials", { email, password, redirect: false })
+      if (result?.error) {
+        toast({ variant: "destructive", title: "Login Failed", description: result.error })
+        setSubmitting(false)
+        return
+      }
+
+      router.replace("/dashboard")
+    } catch {
+      toast({ variant: "info", title: "Error", description: "Try again later" })
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -58,19 +68,27 @@ export default function LoginPage() {
               <Brain className="h-6 w-6" />
             </div>
           </div>
-          <CardTitle>Login to your account</CardTitle>
-          <CardDescription>Welcome back! Enter your credentials.</CardDescription>
+          <CardTitle>Create an account</CardTitle>
+          <CardDescription>Join us and start in seconds.</CardDescription>
         </CardHeader>
 
         <CardContent>
           <form className="space-y-4" onSubmit={handleSubmit}>
+            <Input
+              type="text"
+              placeholder="Full Name"
+              required
+              value={name}
+              onChange={e => setName(e.target.value)}
+              disabled={submitting}
+            />
             <Input
               type="email"
               placeholder="Email"
               required
               value={email}
               onChange={e => setEmail(e.target.value)}
-              disabled={loading}
+              disabled={submitting}
             />
             <Input
               type="password"
@@ -78,11 +96,11 @@ export default function LoginPage() {
               required
               value={password}
               onChange={e => setPassword(e.target.value)}
-              disabled={loading}
+              disabled={submitting}
             />
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : <Lock className="mr-2 h-4 w-4" />}
-              Login
+            <Button type="submit" className="w-full" disabled={submitting}>
+              {submitting ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : <User className="mr-2 h-4 w-4" />}
+              Sign Up
             </Button>
           </form>
 
@@ -93,18 +111,18 @@ export default function LoginPage() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <Button variant="outline" onClick={() => signIn("google")} disabled={loading}>
+            <Button variant="outline" onClick={() => signIn("google")} disabled={submitting}>
               Continue with Google
             </Button>
-            <Button variant="outline" onClick={() => signIn("azure-ad")} disabled={loading}>
+            <Button variant="outline" onClick={() => signIn("azure-ad")} disabled={submitting}>
               Continue with Microsoft
             </Button>
 
-            <p className="text-xs mt-2 text-muted-foreground">
-              Don&apos;t have an account?{" "}
-              <a href="/signup" className="underline">
-                Sign Up
-              </a>
+            <p className="text-sm text-muted-foreground">
+              Already have an account?{" "}
+              <Link href="/login" className="text-primary underline underline-offset-4">
+                Sign In
+              </Link>
             </p>
           </div>
         </CardContent>
