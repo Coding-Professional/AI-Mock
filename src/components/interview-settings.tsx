@@ -51,7 +51,7 @@ export function InterviewSettings({ settings, onSettingsChange }: InterviewSetti
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="general">General Interview</SelectItem>
+              <SelectItem value="general">Confidence Check Interview</SelectItem>
               <SelectItem value="technical">Technical Interview</SelectItem>
               <SelectItem value="behavioral">Behavioral Interview</SelectItem>
               <SelectItem value="leadership">Leadership Interview</SelectItem>
