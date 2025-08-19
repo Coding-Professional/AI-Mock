@@ -12,7 +12,6 @@ import { useToast } from "@/hooks/use-toast"
 export default function LoginPage() {
   const router = useRouter()
   const { toast } = useToast()
-
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
@@ -48,6 +47,15 @@ export default function LoginPage() {
 
     router.replace("/dashboard")
   }
+
+    const handleGoogleLogin = async () => {
+    try {
+      await signIn("google", { callbackUrl: "/dashboard" });
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+      alert("Google sign-in failed.");
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted">
@@ -93,12 +101,15 @@ export default function LoginPage() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <Button variant="outline" onClick={() => signIn("google")} disabled={loading}>
-              Continue with Google
-            </Button>
-            <Button variant="outline" onClick={() => signIn("azure-ad")} disabled={loading}>
-              Continue with Microsoft
-            </Button>
+ 
+              <Button
+                variant="outline"
+                type="button"
+                onClick={handleGoogleLogin}
+                className="w-full"
+              >
+                Login with Google
+              </Button>
 
             <p className="text-xs mt-2 text-muted-foreground">
               Don&apos;t have an account?{" "}
