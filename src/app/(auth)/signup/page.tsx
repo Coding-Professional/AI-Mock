@@ -114,9 +114,6 @@ export default function SignupPage() {
             <Button variant="outline" onClick={() => signIn("google")} disabled={submitting}>
               Continue with Google
             </Button>
-            <Button variant="outline" onClick={() => signIn("azure-ad")} disabled={submitting}>
-              Continue with Microsoft
-            </Button>
 
             <p className="text-sm text-muted-foreground">
               Already have an account?{" "}
